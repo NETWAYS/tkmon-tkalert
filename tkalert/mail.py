@@ -21,6 +21,7 @@
 
 import smtplib
 import logging
+import time
 from email.mime.text import MIMEText
 
 from tkalert.settings import VERSION_STRING, MAIL_TEST_SUBJECT
@@ -62,6 +63,8 @@ class Mailer(object):
 
         message['Subject'] = subject
         message['From'] = self.get_sender_string()
+        message['Envelope-From'] = self.sender
+        message['Date'] = time.strftime("%a, %e %b %Y %H:%M:%S %z", time.localtime())
         message['To'] = self.receiver
         message['X-Mailer'] = VERSION_STRING
 
