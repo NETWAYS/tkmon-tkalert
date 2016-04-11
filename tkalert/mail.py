@@ -32,6 +32,7 @@ LOG = logging.getLogger(__name__)
 
 class Mailer(object):
     """Sends a special formatted mail"""
+
     def __init__(self):
         self.server = None
         self.sender = None
@@ -55,10 +56,9 @@ class Mailer(object):
 
         subject = 'TKMON MESSAGE (type=%s, from=%s)' % (self.alert_type, self.sender_name)
 
-        if self.test_mode == True:
+        if self.test_mode:
             subject = MAIL_TEST_SUBJECT
             LOG.debug("Set subject for testing (Subject=%s)", subject)
-        
 
         message['Subject'] = subject
         message['From'] = self.get_sender_string()
@@ -67,7 +67,6 @@ class Mailer(object):
 
         LOG.debug("Send mail to %s (server=%s)", self.receiver, self.server)
 
-        
-	if "@example.com" not in self.get_sender_string().lower():
-		server = smtplib.SMTP(self.server)
-		server.sendmail(self.sender, self.receiver, message.as_string())
+        if "@example.com" not in self.get_sender_string().lower():
+            server = smtplib.SMTP(self.server)
+            server.sendmail(self.sender, self.receiver, message.as_string())
